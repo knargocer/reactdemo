@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { CastList, TrailerList} from '../components';
+import { CastList, TrailerList, MovieList} from '../components';
 import { CAST_MAX_NUM, TRAILER_MAX_NUM } from '../const';
 import { Grid, Row, Col} from 'react-bootstrap/lib';
 import { MovieInfo, Poster } from '../components';
 import { connect } from 'react-redux';
-import { fetchMovieDetail, fetchCastList, fetchTrailerList} from '../actions';
+//imported the necessary fetching action for related movies
+import { fetchRelatedMovies, fetchMovieDetail, fetchCastList, fetchTrailerList, fetchMovieList} from '../actions';
+import SubTitle from '../components/SubTitle'
 
 class MovieDetail extends Component {
 
@@ -13,6 +15,9 @@ class MovieDetail extends Component {
     dispatch(fetchMovieDetail(this.props.params.id));
     dispatch(fetchCastList(this.props.params.id));
     dispatch(fetchTrailerList(this.props.params.id));
+    //fetching Related Movies 
+    dispatch(fetchRelatedMovies(this.props.params.id));
+    dispatch(fetchMovieList)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,7 +38,7 @@ class MovieDetail extends Component {
   // }
 
   render() {
-    const {movie, casts, trailers, isFetcing_movie, isFetcing_casts, isFetcing_trailers} = this.props;
+    const {movie,movies, casts, trailers, isFetcing_movie, isFetcing_casts, isFetcing_trailers} = this.props;
 
     if(isFetcing_movie || isFetcing_casts || isFetcing_trailers) {
       return <p>loading...</p>
@@ -51,7 +56,13 @@ class MovieDetail extends Component {
             </Col>
           </Row>
           <Row>
+          
             <TrailerList data={trailers.slice(0,TRAILER_MAX_NUM)} />
+           
+          </Row>
+          <Row>
+            <SubTitle title={'Related Movies'} />
+            <MovieList movies={movies.slice(0,4)} />
           </Row>
         </Grid>
       );
@@ -61,13 +72,15 @@ class MovieDetail extends Component {
   }
 }
 
+//Adding movieList to props
 function mapStateToProps(state){
-  const {movieDetail, castList, trailerList} = state;
+  const {movieDetail, castList, trailerList,movieList} = state;
+  const {items:movies} = movieList;
   const {isFetcing_movie, item: movie, error_movie} = movieDetail;
   const {isFetcing_casts, items: casts, error_casts} = castList;
   const {isFetcing_trailers, items: trailers, error_trailers} = trailerList;
 
-  return {isFetcing_movie, movie, error_movie, isFetcing_casts, casts, error_casts, isFetcing_trailers, trailers, error_trailers}
+  return {movies,isFetcing_movie, movie, error_movie, isFetcing_casts, casts, error_casts, isFetcing_trailers, trailers, error_trailers}
 }
 
 export default connect(mapStateToProps)(MovieDetail);

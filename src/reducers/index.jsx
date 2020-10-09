@@ -6,7 +6,7 @@ import {FETCH_MOVIES, FETCH_MOVIES_SUCCESS, FETCH_MOVIES_FAILURE,
   FETCH_STAR_SUCCESS, FETCH_STAR_FAILURE,
   FETCH_CASTS, FETCH_CASTS_SUCCESS, FETCH_CASTS_FAILURE,
   FETCH_TRAILERS, FETCH_TRAILERS_SUCCESS, FETCH_TRAILERS_FAILURE,
-  SEARCH_MOVIE, SEARCH_MOVIE_SUCCESS, SEARCH_MOVIE_FAILURE} from '../actions'
+  SEARCH_MOVIE, SEARCH_MOVIE_SUCCESS, SEARCH_MOVIE_FAILURE,FETCH_RELATED} from '../actions'
 
 const defaultStateList = {
   isFetching: false,
@@ -24,6 +24,9 @@ const movieList = (state = defaultStateList, action) => {
       return {...state, isFetching:false, items:action.data};
     case FETCH_MOVIES_FAILURE:
     case SEARCH_MOVIE_FAILURE:
+      return {...state, isFetching:false, error:action.data};
+      //Added the reducer for fetching the related movies action
+    case FETCH_RELATED:
       return {...state, isFetching:false, error:action.data};
     default:
       return state;

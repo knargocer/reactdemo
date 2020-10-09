@@ -22,3 +22,10 @@ It uses open [The Movie Database (TMDb) API] (https://www.themoviedb.org/documen
 * Responsive design using [React-Bootstrap](https://react-bootstrap.github.io/)
 * State management using [React-Redux](https://github.com/reactjs/react-redux)
 * Environment set-up using [Create-React-App](https://github.com/facebookincubator/create-react-app)
+
+##Bugs
+
+* Fix the cast images in the single movie page + 
+* Display the cast images in a row +
+* Add related movies to the single movie page + 
+    Do it as Known for in the StarDetail

@@ -18,6 +18,7 @@ export const FETCH_CASTS_FAILURE = 'FETCH_CASTS_FAILURE';
 export const FETCH_TRAILERS = 'FETCH_TRAILERS';
 export const FETCH_TRAILERS_SUCCESS = 'FETCH_TRAILERS_SUCCESS';
 export const FETCH_TRAILERS_FAILURE = 'FETCH_TRAILERS_FAILURE';
+export const FETCH_RELATED = 'FETCH_RELATED';
 
 function searchMovie(searchText) {
   return {
@@ -38,6 +39,13 @@ function searchMovieFail(error) {
   return {
     type: SEARCH_MOVIE_FAILURE,
     error
+  };
+}
+
+//Added the action of fetching the related movies
+function fetchRelated(){
+  return {
+    type: FETCH_RELATED
   };
 }
 
@@ -153,6 +161,20 @@ export function fetchMovieList(option){
   else url = URL_LIST + API_KEY;
   return function(dispatch){
     dispatch(fetchMovies());
+    return fetch(url)
+      .then(response => response.json())
+      .then(json => json.results)
+      .then(data => dispatch(fetchMoviesSuccess(data)))
+      .catch(error => dispatch(fetchMoviesFail(error)))
+  }
+}
+//Added the fucntion to fetch the related movies
+export function fetchRelatedMovies(id){
+  let url;
+  if(id) url = URL_DETAIL +id+"/similar"+ API_KEY ;
+  else url = URL_LIST + API_KEY;
+  return function(dispatch){
+    dispatch(fetchRelated());
     return fetch(url)
       .then(response => response.json())
       .then(json => json.results)

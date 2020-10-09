@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Glyphicon } from 'react-bootstrap'
 
 export default function Poster(props){
-
+  console.log(props)
   const StyledImg = styled.div`
     &:hover .image{
        opacity:1;
